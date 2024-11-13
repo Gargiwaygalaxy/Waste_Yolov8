@@ -5,7 +5,7 @@ import cvzone
 import math
 from ultralytics import YOLO
 
-# Set up the YOLO model and video capture
+# the best.pt file is trained on yolov8 large on google colab
 model = YOLO("best.pt")
 cap = cv2.VideoCapture(0)
 
@@ -13,6 +13,7 @@ cap.set(3, 640)
 cap.set(4, 480)
 
 classNames = ['dry', 'wet']
+#"ip-address" is the IP address of the server running fast api , you can get that using ipconfig on windows
 url = "http://ip-address/push-data"
 
 def detect_and_send():
@@ -22,7 +23,7 @@ def detect_and_send():
         print("Failed to capture image")
         return
 
-    # Perform detection
+    
     results = model(img, stream=True)
     for r in results:
         boxes = r.boxes
@@ -50,7 +51,7 @@ def detect_and_send():
             except requests.exceptions.RequestException as e:
                 print(f"An error occurred: {e}")
 
-    # Display the image with detections
+    # displays whether the image frame detected is dry or wet with probability
     cv2.imshow("image", img)
     cv2.waitKey(1)
 
